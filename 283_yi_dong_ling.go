@@ -16,7 +16,6 @@
 -231 <= nums[i] <= 231 - 1
 
 进阶：你能尽量减少完成的操作次数吗？
-
 */
 package main
 
@@ -30,15 +29,14 @@ func main() {
 
 // 遍历数组，如果值不为0，则将指针前移动1位，并且将指针前一位设置位当前值，如果为0，指针不动，如此遍历完成后 [0,j) 区间都是不为0的元素，[j:]都是0
 func sol_283_1(nums []int) {
-	j := 0
+	nonZeroPoint := 0
 	for _, num := range nums {
 		if num != 0 {
-			j += 1
-			nums[j-1] = num
+			nums[nonZeroPoint] = num
+			nonZeroPoint++
 		}
 	}
-	for j < len(nums) {
-		nums[j] = 0
-		j++
+	for ; nonZeroPoint < len(nums); nonZeroPoint++ {
+		nums[nonZeroPoint] = 0
 	}
 }
