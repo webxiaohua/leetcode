@@ -27,30 +27,34 @@ package main
 
 import "fmt"
 
-func lengthOfLongestSubstring(s string) int {
-	// 滑动窗口（遍历，比较） + 双指针（计算长度）
-	// 定义map {元素:最后一次出现位置}
-	maxLength := 0
-	mapLastIndex := make(map[byte]int)
-	// 双指针，定义开头指针
-	start := 0
-	// 遍历，开启滑动窗口
-	for end, val := range []byte(s) {
-		// 如果在map中出现过，说明已经存在，滑动窗口左侧指针往右移动到上一次出现的位置
-		// 同时需要考虑 abba 的问题， 必需当前下标超过start指针才行
-		if lastIndex, ok := mapLastIndex[val]; ok && lastIndex >= start {
-			start = lastIndex + 1
-		}
-		// 记录元素上一次出现的位置
-		mapLastIndex[val] = end
-		// 跟maxLength比较
-		if (end - start + 1) > maxLength {
-			maxLength = end - start + 1
-		}
-	}
-	return maxLength
+func main() {
+	//s := "abba"
+	//s := "bbbbb"
+	//s := "pwwkew"
+	s := "dvdf"
+	res := sol3_1(s)
+	fmt.Println(res)
 }
 
-func main() {
-	fmt.Println(lengthOfLongestSubstring("abba"))
+func sol3_1(s string) int {
+	res, start, end := 0, 0, 0
+	tmpMap := make(map[byte]int)
+	tmpArr := []byte(s)
+	for ; end < len(s); end++ {
+		if _, ok := tmpMap[tmpArr[end]]; ok && start <= tmpMap[tmpArr[end]] {
+			res = sol3GetMax(res, end-start)
+			start = tmpMap[tmpArr[end]] + 1
+		}
+		tmpMap[tmpArr[end]] = end
+	}
+	res = sol3GetMax(res, end-start)
+	return res
+}
+
+func sol3GetMax(a, b int) int {
+	if a > b {
+		return a
+	} else {
+		return b
+	}
 }
