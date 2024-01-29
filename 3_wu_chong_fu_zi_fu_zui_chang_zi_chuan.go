@@ -1,5 +1,5 @@
 /**
- 3. 无重复字符的最长子串
+【题目3】无重复字符的最长子串
 给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
 示例 1:
 
@@ -37,10 +37,12 @@ func main() {
 }
 
 func sol3_1(s string) int {
+	// 滑动窗口
 	res, start, end := 0, 0, 0
 	tmpMap := make(map[byte]int)
 	tmpArr := []byte(s)
 	for ; end < len(s); end++ {
+		// 需要注意，start 可能跑到相同元素值后面，此时不需要计算
 		if _, ok := tmpMap[tmpArr[end]]; ok && start <= tmpMap[tmpArr[end]] {
 			res = sol3GetMax(res, end-start)
 			start = tmpMap[tmpArr[end]] + 1
