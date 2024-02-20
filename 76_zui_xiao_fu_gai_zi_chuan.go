@@ -39,7 +39,7 @@ import "fmt"
 func main() {
 	s := "ADOBECODEBANC"
 	t := "ABC"
-	res := sol76_1(s, t)
+	res := sol76_2(s, t)
 	fmt.Println(res)
 }
 
@@ -81,6 +81,44 @@ func sol76_1(s string, t string) string {
 	}
 	if minLen != maxLength {
 		res = s[minLenStart : minLenStart+minLen]
+	}
+	return res
+}
+
+func sol76_2(s string, t string) string {
+	res := ""
+	left, right := 0, 0
+	tMap := make(map[byte]int) // 字符:出现次数
+	for i := 0; i < len(t); i++ {
+		tMap[t[i]]++
+	}
+	windowMap := make(map[byte]int) // 滑动窗口  字符：出现次数
+	windowEnoughCnt := 0            // 当前窗口满足条件的数量
+	maxLength := 999999
+	minLength, minLeft := maxLength, 0
+	for right < len(s) {
+		windowMap[s[right]]++
+		if windowMap[s[right]] == tMap[s[right]] {
+			windowEnoughCnt++
+		}
+		for windowEnoughCnt == len(tMap) {
+			if right-left+1 < minLength {
+				minLength = right - left + 1
+				minLeft = left
+			}
+			charLeft := s[left]
+			windowMap[charLeft]--
+			if cnt, ok := tMap[charLeft]; ok {
+				if windowMap[charLeft] < cnt {
+					windowEnoughCnt--
+				}
+			}
+			left++
+		}
+		right++
+	}
+	if minLength != maxLength {
+		res = s[minLeft : minLeft+minLength]
 	}
 	return res
 }
