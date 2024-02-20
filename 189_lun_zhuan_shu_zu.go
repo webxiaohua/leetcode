@@ -18,9 +18,9 @@
 向右轮转 2 步: [3,99,-1,-100]
 
 提示：
-1 <= nums.length <= 105
--231 <= nums[i] <= 231 - 1
-0 <= k <= 105
+1 <= nums.length <= 10^5
+-2^31 <= nums[i] <= 2^31 - 1
+0 <= k <= 10^5
 
 进阶：
 尽可能想出更多的解决方案，至少有 三种 不同的方法可以解决这个问题。
@@ -29,6 +29,35 @@
 
 package main
 
-func sol189_1(nums []int, k int) {
+import "fmt"
 
+func main() {
+	nums := []int{1, 2, 3, 4, 5, 6, 7}
+	sol189_2(nums, 3)
+	fmt.Println(nums)
+}
+
+func sol189_1(nums []int, k int) {
+	// 复制一个新切片，将调整好的数据拷贝到原来的切片中
+	k = k % len(nums)
+	res := nums[len(nums)-k:]
+	res = append(res, nums[0:len(nums)-k]...)
+	copy(nums, res)
+}
+
+func sol189_2(nums []int, k int) {
+	reverse := func(list []int, start, end int) {
+		for start < end {
+			list[start], list[end] = list[end], list[start]
+			start++
+			end--
+		}
+	}
+	// 反转整个数组
+	// 反转数组的前k个元素
+	// 反转数组的后n-k个元素
+	k = k % len(nums)
+	reverse(nums, 0, len(nums)-1)
+	reverse(nums, 0, k-1)
+	reverse(nums, k, len(nums)-1)
 }
