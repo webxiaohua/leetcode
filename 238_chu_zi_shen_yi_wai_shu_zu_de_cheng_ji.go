@@ -57,10 +57,10 @@ func sol238_2(nums []int) []int {
 		res[i] = res[i-1] * nums[i-1]
 	}
 	// 分别乘以右侧数据
-	for i := 0; i < len(nums); i++ {
-		for j := i + 1; j < len(nums); j++ {
-			res[i] = res[i] * nums[j]
-		}
+	right := 1
+	for i := len(nums) - 1; i >= 0; i-- {
+		res[i] = res[i] * right
+		right = right * nums[i]
 	}
 	return res
 }
