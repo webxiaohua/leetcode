@@ -1,6 +1,6 @@
 /*
 【题目160】相交链表
-给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
+给你两个单链表的头节点 headA 和 headB ，请你找出并返回两个单链表相交的起始节点。如果两个链表不存在相交节点，返回 null 。
 图示两个链表在节点 c1 开始相交：
 
 a1,a2,c1,c2,c3
@@ -67,7 +67,7 @@ func main() {
 	headB_2 := &ListNode160{Val: 12, Next: headB_3}
 	headB_1 := &ListNode160{Val: 11, Next: headB_2}
 
-	res := sol160_4(headA_1, headB_1)
+	res := sol160_5(headA_1, headB_1)
 	fmt.Println(res)
 }
 
@@ -187,4 +187,32 @@ func sol160_4(headA, headB *ListNode160) *ListNode160 {
 		b = b.Next
 	}
 	return nil
+}
+
+// 双指针交叉遍历 考虑到 len(A) + len(B) = len(B) + len(A) ，所以启动A、B两个指针，分别从AB两个链表的头节点开始遍历，当一个指针遍历到当前链表结尾的时候转头去遍历另一个链表的头节点，两个指针走到相同节点即可得出解
+func sol160_5(headA, headB *ListNode160) *ListNode160 {
+	var res *ListNode160
+	tmpA, tmpB := headA, headB
+	for {
+		if tmpA == nil {
+			if tmpB == nil {
+				break
+			} else {
+				tmpA = headB
+			}
+		} else if tmpB == nil {
+			if tmpA == nil {
+				break
+			} else {
+				tmpB = headA
+			}
+		} else if tmpA == tmpB {
+			res = tmpA
+			break
+		} else {
+			tmpA = tmpA.Next
+			tmpB = tmpB.Next
+		}
+	}
+	return res
 }
