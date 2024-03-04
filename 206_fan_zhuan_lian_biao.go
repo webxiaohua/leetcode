@@ -96,26 +96,26 @@ func sol206_4(head *ListNode206) *ListNode206 {
 }
 
 func sol206_5(head *ListNode206) *ListNode206 {
-	var prev, current *ListNode206
-	current = head
-	for {
-		if current == nil {
-			break
-		}
-		next := current.Next
-		current.Next = prev
-		prev = current
-		current = next
-	}
-	return prev
-}
-
-func sol206_6(head *ListNode206) *ListNode206 {
 	if head == nil || head.Next == nil {
 		return head
 	}
-	node := sol206_6(head.Next)
-	head.Next.Next = head
-	head.Next = nil
-	return node
+	endNode := sol206_5(head.Next) // 4->nil 4->3->nil 4->3->2->nil 4->3->2->1->nil
+	head.Next.Next = head          // 3->4->3 2->3->2 1->2->1
+	head.Next = nil                // 3->nil 2->nil 1->nil
+	return endNode                 // 4->3	4->3->2	4->3->2->1
+}
+
+func sol206_6(head *ListNode206) *ListNode206 {
+	var prev, curr *ListNode206
+	curr = head
+	for {
+		if curr == nil {
+			break
+		}
+		next := curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+	}
+	return prev
 }
