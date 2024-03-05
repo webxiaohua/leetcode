@@ -71,7 +71,7 @@ func main() {
 			Next: nil,
 		},
 	}}
-	res := addTwoNumbers(l1, l2)
+	res := sol2_1(l1, l2)
 	fmt.Println(res)
 }
 
@@ -97,3 +97,35 @@ func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
 	return res.Next
 }
 */
+
+func sol2_1(l1 *ListNode2, l2 *ListNode2) *ListNode2 {
+	res := &ListNode2{}
+	current := res
+	carry := 0 // 进位
+	for {
+		if l1 == nil && l2 == nil {
+			if carry > 0 {
+				current.Next = &ListNode2{Val: carry}
+			}
+			break
+		}
+		tmpVal := carry
+		if l1 != nil {
+			tmpVal += l1.Val
+			l1 = l1.Next
+		}
+		if l2 != nil {
+			tmpVal += l2.Val
+			l2 = l2.Next
+		}
+		if tmpVal > 9 {
+			carry = 1 // 重置为1，带入下一轮
+			tmpVal = tmpVal % 10
+		} else {
+			carry = 0
+		}
+		current.Next = &ListNode2{Val: tmpVal}
+		current = current.Next
+	}
+	return res.Next
+}

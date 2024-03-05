@@ -4,20 +4,19 @@
 如果链表中有某个节点，可以通过连续跟踪 next 指针再次到达，则链表中存在环。 为了表示给定链表中的环，评测系统内部使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。如果 pos 是 -1，则在该链表中没有环。注意：pos 不作为参数进行传递，仅仅是为了标识链表的实际情况。
 不允许修改 链表。
 
-
 示例 1:
 3 -> 2 -> 0 -> -4
-     |__________|
+
+	|__________|
+
 输入：head = [3,2,0,-4], pos = 1
 输出：返回索引为 1 的链表节点
 解释：链表中有一个环，其尾部连接到第二个节点。
-
 
 提示：
 链表中节点的数目范围在范围 [0, 104] 内
 -105 <= Node.val <= 105
 pos 的值为 -1 或者链表中的一个有效索引
-
 */
 package main
 
@@ -94,5 +93,32 @@ func sol142_2(head *ListNode142) *ListNode142 {
 		}
 		i = i.Next
 		j = j.Next
+	}
+}
+
+func sol142_3(head *ListNode142) *ListNode142 {
+	exist := false
+	slow, fast := head, head
+	for {
+		if fast == nil || fast.Next == nil {
+			break
+		}
+		fast = fast.Next.Next
+		slow = slow.Next
+		if fast == slow {
+			exist = true
+			break
+		}
+	}
+	if !exist {
+		return nil
+	}
+	slow = head
+	for {
+		if slow == fast {
+			return slow
+		}
+		slow = slow.Next
+		fast = fast.Next
 	}
 }
