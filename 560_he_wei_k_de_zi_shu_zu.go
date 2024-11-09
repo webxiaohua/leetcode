@@ -45,3 +45,8 @@ func sol560_1(nums []int, k int) int {
 	}
 	return res
 }
+
+// 滑动窗口求解
+func sol560_2(nums []int, k int) int {
+
+}

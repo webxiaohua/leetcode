@@ -23,8 +23,14 @@ type ListNode206 struct {
 
 func main() {
 	node := &ListNode206{Val: 1, Next: &ListNode206{Val: 2, Next: &ListNode206{Val: 3, Next: &ListNode206{Val: 4}}}}
-	res := sol206_6(node)
-	fmt.Println(res)
+	res := sol206_7(node)
+	for {
+		if res == nil {
+			break
+		}
+		fmt.Println(res.Val)
+		res = res.Next
+	}
 }
 
 // 双指针循环法，记住上一个节点和下一个节点，需要借助临时变量处理断链问题，两两串联
@@ -118,4 +124,8 @@ func sol206_6(head *ListNode206) *ListNode206 {
 		curr = next
 	}
 	return prev
+}
+
+func sol206_7(head *ListNode206) *ListNode206 {
+	return nil
 }
