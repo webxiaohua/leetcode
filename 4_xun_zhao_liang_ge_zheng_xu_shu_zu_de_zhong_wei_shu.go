@@ -24,15 +24,47 @@ nums2.length == n
 
 package main
 
-func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
-	// 求元素总个数，判断奇偶数，双指针遍历
-	sortedList := make([]int, 0)
-	if len(nums1) == 0 {
-		sortedList = nums2
-	} else if len(nums2) == 0 {
-		sortedList = nums1
-	} else {
-		var p1, p2 int
+import "fmt"
 
+func main() {
+	/*nums1 := []int{1, 3}
+	nums2 := []int{2}
+	fmt.Println(findMedianSortedArrays(nums1, nums2))*/
+	nums1 := []int{1, 2}
+	nums2 := []int{3, 4}
+	fmt.Println(findMedianSortedArrays(nums1, nums2))
+}
+
+func findMedianSortedArrays(nums1 []int, nums2 []int) float64 {
+	sortedArr := make([]int, 0)
+	if len(nums1) == 0 {
+		sortedArr = append(sortedArr, nums2...)
+	} else if len(nums2) == 0 {
+		sortedArr = append(sortedArr, nums1...)
+	} else {
+		i, j := 0, 0
+		for i < len(nums1) && j < len(nums2) {
+			if nums1[i] < nums2[j] {
+				sortedArr = append(sortedArr, nums1[i])
+				i++
+			} else {
+				sortedArr = append(sortedArr, nums2[j])
+				j++
+			}
+		}
+		if i < len(nums1) {
+			sortedArr = append(sortedArr, nums1[i:]...)
+		}
+		if j < len(nums2) {
+			sortedArr = append(sortedArr, nums2[j:]...)
+		}
+	}
+	if len(sortedArr) == 0 {
+		return 0
+	}
+	if len(sortedArr)%2 == 0 {
+		return float64(sortedArr[len(sortedArr)/2]+sortedArr[len(sortedArr)/2-1]) / 2
+	} else {
+		return float64(sortedArr[len(sortedArr)/2])
 	}
 }
