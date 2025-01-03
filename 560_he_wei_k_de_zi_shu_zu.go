@@ -35,7 +35,7 @@ func sol560_1(nums []int, k int) int {
 	// map[前缀和]次数
 	sum := 0
 	prefixMap := make(map[int]int)
-	prefixMap[0] = 1
+	prefixMap[0] = 1 // 初始化前缀和为 0 的次数为 1
 	for i := 0; i < len(nums); i++ {
 		sum += nums[i]
 		if _, ok := prefixMap[sum-k]; ok {
@@ -44,9 +44,4 @@ func sol560_1(nums []int, k int) int {
 		prefixMap[sum]++
 	}
 	return res
-}
-
-// 滑动窗口求解
-func sol560_2(nums []int, k int) int {
-
 }
