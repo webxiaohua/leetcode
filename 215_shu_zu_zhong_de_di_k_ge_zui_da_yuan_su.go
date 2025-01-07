@@ -22,16 +22,24 @@ package main
 import (
 	"container/heap"
 	"fmt"
+	"sort"
 )
 
 func main() {
 	nums := []int{3, 2, 1, 5, 6, 4}
 	k := 2
-	res := findKthLargest(nums, k) // 5
+	res := sol215_2(nums, k) // 5
 	fmt.Println(res)
 }
 
-func findKthLargest(nums []int, k int) int {
+func sol215_2(nums []int, k int) int {
+	sort.Slice(nums, func(i, j int) bool {
+		return nums[i] < nums[j]
+	})
+	return nums[len(nums)-k]
+}
+
+func sol215_1(nums []int, k int) int {
 	res := 0
 	// 初始化小根堆
 	minHeap := &MinHeap{}
