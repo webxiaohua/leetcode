@@ -31,7 +31,6 @@ import "fmt"
 4:5
 5:8
 
-
 f(1) = 1
 f(2) = 2
 f(n) = f(n-1) + f(n-2)
@@ -43,7 +42,7 @@ func main() {
 	/*tmpMap = make(map[int]int)
 	res := sol70_2(45)*/
 	//res := sol70_3(45)
-	res := sol70_4(45)
+	res := sol70_4(3)
 	fmt.Println(res)
 
 }
