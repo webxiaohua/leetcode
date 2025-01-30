@@ -75,3 +75,24 @@ func validate(root *TreeNode98, min, max int) bool {
 	}
 	return validate(root.Left, min, root.Val) && validate(root.Right, root.Val, max)
 }
+
+// 中序遍历，判断是否递增
+func sol98_2(root *TreeNode98) bool {
+	stack := make([]*TreeNode98, 0)
+	prevNum := math.MinInt
+	for len(stack) > 0 || root != nil {
+		// 左子树
+		for root != nil {
+			stack = append(stack, root)
+			root = root.Left
+		}
+		root = stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
+		if root.Val <= prevNum {
+			return false
+		}
+		prevNum = root.Val
+		stack = append(stack, root.Right)
+	}
+	return true
+}
