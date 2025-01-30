@@ -18,7 +18,7 @@
 树中节点数目在范围 [0, 100] 内
 -100 <= Node.val <= 100
 
-进阶: 递归算法很简单，你可以通过迭代算法完成吗？
+进阶:递归算法很简单，你可以通过迭代算法完成吗？
 */
 package main
 
@@ -26,7 +26,7 @@ import "fmt"
 
 func main() {
 	node := &TreeNode94{Val: 1, Right: &TreeNode94{Val: 2, Left: &TreeNode94{Val: 3}}}
-	res := sol94_1(node)
+	res := sol94_2(node)
 	fmt.Println(res)
 }
 
@@ -36,7 +36,7 @@ type TreeNode94 struct {
 	Right *TreeNode94
 }
 
-// 递归法
+// 递归法 - 左，根，右
 func sol94_1(root *TreeNode94) []int {
 	res := make([]int, 0)
 	if root == nil {
@@ -45,5 +45,16 @@ func sol94_1(root *TreeNode94) []int {
 	res = append(res, sol94_1(root.Left)...)
 	res = append(res, root.Val)
 	res = append(res, sol94_1(root.Right)...)
+	return res
+}
+
+func sol94_2(root *TreeNode94) []int {
+	res := make([]int, 0)
+	if root == nil {
+		return res
+	}
+	res = append(res, sol94_2(root.Left)...)
+	res = append(res, root.Val)
+	res = append(res, sol94_2(root.Right)...)
 	return res
 }

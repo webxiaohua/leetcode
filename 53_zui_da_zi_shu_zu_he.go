@@ -24,11 +24,14 @@
 
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math"
+)
 
 func main() {
 	nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
-	res := sol53_1(nums)
+	res := sol53_2(nums)
 	fmt.Println(res)
 }
 
@@ -49,4 +52,20 @@ func sol53_1(nums []int) int {
 		}
 	}
 	return maxGlobal
+}
+
+func sol53_2(nums []int) int {
+	globalMaxSum, currentMaxSum := math.MinInt32, 0
+	for _, num := range nums {
+		if currentMaxSum < 0 {
+			currentMaxSum = num
+		} else {
+			currentMaxSum += num
+		}
+		// 更新最大和
+		if currentMaxSum > globalMaxSum {
+			globalMaxSum = currentMaxSum
+		}
+	}
+	return globalMaxSum
 }

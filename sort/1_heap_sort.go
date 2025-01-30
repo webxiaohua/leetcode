@@ -8,45 +8,40 @@ package main
 
 import "fmt"
 
-func main() {
-	nums := []int{4, 2, 1, 3, 5, 9}
-	heapSort(nums)
-	fmt.Println(nums)
-}
-
-// 堆化处理 (nums 数组, n表示当前需要处理的数组长度, i表示当前元素)
-func maxHeapify(nums []int, n, i int) {
-	largest := i
+func maxHeapify(nums []int, i int) {
+	if i >= len(nums)/2 {
+		return
+	}
 	left := 2*i + 1
 	right := 2*i + 2
-	if left < n && nums[left] > nums[largest] {
-		largest = left
+	largest := i
+	if left < len(nums) {
+		if nums[largest] < nums[left] {
+			largest = left
+		}
 	}
-	if right < n && nums[right] > nums[largest] {
-		largest = right
+	if right < len(nums) {
+		if nums[largest] < nums[right] {
+			largest = right
+		}
 	}
 	if largest != i {
 		nums[i], nums[largest] = nums[largest], nums[i]
-		maxHeapify(nums, n, largest)
 	}
+	i++
+	maxHeapify(nums, i)
 }
 
-// 构建大顶堆
-func buildMaxHeap(nums []int) {
-	n := len(nums)
-	for i := n/2 - 1; i >= 0; i-- {
-		maxHeapify(nums, n, i)
-	}
-}
-
-// 堆排序
 func heapSort(nums []int) {
-	// 构建大顶堆
-	buildMaxHeap(nums)
-	for i := 0; i < len(nums); i++ {
-		// 将堆顶元素与末尾元素交换
-		nums[0], nums[len(nums)-1-i] = nums[len(nums)-1-i], nums[0]
-		// 重新构建大顶堆
-		maxHeapify(nums, len(nums)-1-i, 0)
+	maxHeapify(nums, 0)
+	for i := len(nums) - 1; i > 0; i-- {
+		nums[0], nums[i] = nums[i], nums[0]
+		maxHeapify(nums[:i], 0)
 	}
+}
+
+func main() {
+	nums := []int{2, 6, 4, 9, 1, 0, 8}
+	heapSort(nums)
+	fmt.Println(nums)
 }

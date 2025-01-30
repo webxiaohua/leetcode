@@ -23,7 +23,7 @@ import "fmt"
 
 func main() {
 	height := []int{0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1}
-	res := sol42_1(height)
+	res := sol42_2(height)
 	fmt.Println(res)
 }
 
@@ -53,4 +53,42 @@ func getMax(a, b int) int {
 	} else {
 		return b
 	}
+}
+
+func sol42_2(height []int) int {
+	var res int
+	left, right := 0, len(height)-1
+	if left >= right {
+		return res
+	}
+	leftLarge, rightLarge := height[0], height[len(height)-1]
+	isLeft := true
+	for {
+		if left >= right {
+			break
+		}
+		if isLeft {
+			if leftLarge < height[left] {
+				leftLarge = height[left]
+			} else {
+				res += leftLarge - height[left]
+			}
+		} else {
+			if rightLarge < height[right] {
+				rightLarge = height[right]
+			} else {
+				res += rightLarge - height[right]
+			}
+		}
+		if leftLarge < rightLarge {
+			left++
+			isLeft = true
+			continue
+		} else {
+			right--
+			isLeft = false
+			continue
+		}
+	}
+	return res
 }
