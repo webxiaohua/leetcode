@@ -22,13 +22,48 @@ k 是一个正整数，它的值小于或等于链表的长度。如果节点总
 
 package main
 
+import "fmt"
+
 type ListNode25 struct {
 	Val  int
 	Next *ListNode25
 }
 
+func main() {
+	node := &ListNode25{Val: 1, Next: &ListNode25{Val: 2, Next: &ListNode25{Val: 3, Next: &ListNode25{Val: 4, Next: &ListNode25{Val: 5}}}}}
+	res := sol25_1(node, 2)
+	for {
+		if res != nil {
+			fmt.Println(res.Val)
+			res = res.Next
+		} else {
+			break
+		}
+	}
+}
+
 func sol25_1(head *ListNode25, k int) *ListNode25 {
 	res := &ListNode25{Next: head}
-
-	return res
+	prev := res
+	for {
+		var nodes []*ListNode25
+		tmpNode := prev
+		for i := 0; i < k; i++ {
+			if tmpNode.Next != nil {
+				nodes = append(nodes, tmpNode.Next)
+				tmpNode = tmpNode.Next
+			}
+		}
+		if len(nodes) != k {
+			break
+		}
+		// nodes 反转链表
+		nodes[0].Next = nodes[k-1].Next
+		for i := k - 1; i > 0; i-- {
+			nodes[i].Next = nodes[i-1]
+		}
+		prev.Next = nodes[k-1]
+		prev = nodes[0]
+	}
+	return res.Next
 }
