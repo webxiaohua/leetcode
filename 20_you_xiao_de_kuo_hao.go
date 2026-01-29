@@ -1,10 +1,10 @@
-/*
+/**
 【题目20】有效的括号
 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串 s ，判断字符串是否有效。
 有效字符串需满足：
-	左括号必须用相同类型的右括号闭合。
-	左括号必须以正确的顺序闭合。
-	每个右括号都有一个对应的相同类型的左括号。
+左括号必须用相同类型的右括号闭合。
+左括号必须以正确的顺序闭合。
+每个右括号都有一个对应的相同类型的左括号。
 
 示例 1：
 输入：s = "()"
@@ -22,37 +22,64 @@
 输入：s = "([])"
 输出：true
 
+示例 5：
+输入：s = "([)]"
+输出：false
+
 提示：
+
 1 <= s.length <= 104
 s 仅由括号 '()[]{}' 组成
-*/
+**/
 
 package main
 
-func isValid(s string) bool {
-	// 遇到左括号就入栈，遇到右括号出栈并做配对，如果配对失败直接返回false，否则遍历到最后，栈为空则返回true，不空返回false
-	stack := make([]rune, 0)
-	for _, v := range s {
-		if v == '(' || v == '[' || v == '{' {
-			stack = append(stack, v)
+func main() {
+	// 示例测试
+	println(sol20_1("()"))         // true
+	println(sol20_1("()[]{}"))     // true
+	println(sol20_1("(]"))         // false
+	println(sol20_1("([])"))       // true
+	println(sol20_1("([)]"))       // false
+	println(sol20_1("{[()]}"))     // true
+	println(sol20_1("((()))"))     // true
+	println(sol20_1("((())"))      // false
+	println(sol20_1(")("))         // false
+	println(sol20_1("]"))          // false
+	println(sol20_1("["))          // false
+	println(sol20_1("{[()]}{[]}")) // true
+}
+
+func sol20_1(s string) bool {
+	var stack []string
+	for i := 0; i < len(s); i++ {
+		tmpS := string(s[i])
+		if tmpS == "(" || tmpS == "{" || tmpS == "[" {
+			stack = append(stack, tmpS)
+		} else if len(stack) == 0 {
+			stack = append(stack, tmpS)
 		} else {
-			if len(stack) == 0 {
-				return false
-			}
-			outChar := stack[len(stack)-1]
-			stack = stack[0 : len(stack)-1]
-			if v == ')' && outChar != '(' {
-				return false
-			} else if v == ']' && outChar != '[' {
-				return false
-			} else if v == '}' && outChar != '{' {
-				return false
+			switch tmpS {
+			case ")":
+				if stack[len(stack)-1] == "(" {
+					stack = stack[:len(stack)-1]
+				} else {
+					stack = append(stack, tmpS)
+				}
+			case "}":
+				if stack[len(stack)-1] == "{" {
+					stack = stack[:len(stack)-1]
+				} else {
+					stack = append(stack, tmpS)
+				}
+			case "]":
+				if stack[len(stack)-1] == "[" {
+					stack = stack[:len(stack)-1]
+				} else {
+					stack = append(stack, tmpS)
+				}
 			}
 		}
 	}
-	if len(stack) == 0 {
-		return true
-	} else {
-		return false
-	}
+	return len(stack) == 0
 }

@@ -16,7 +16,7 @@
 输出: [["a"]]
 
 提示：
-1 <= strs.length <= 10^4
+1 <= strs.length <= 104
 0 <= strs[i].length <= 100
 strs[i] 仅包含小写字母
 
@@ -32,14 +32,14 @@ import (
 
 func main() {
 	strs := []string{"eat", "tea", "tan", "ate", "nat", "bat"}
-	res := sol49_1(strs)
+	res := groupAnagrams(strs)
 	fmt.Println(res)
 }
 
-func sol49_1(strs []string) [][]string {
-	// map + 排序key
+func groupAnagrams(strs []string) [][]string {
 	res := make([][]string, 0)
 	tmpMap := make(map[string][]string)
+	// 排序 + map[string][]string
 	for _, str := range strs {
 		strArr := strings.Split(str, "")
 		sort.Strings(strArr)

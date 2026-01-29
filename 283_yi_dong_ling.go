@@ -12,8 +12,8 @@
 输出: [0]
 
 提示:
-1 <= nums.length <= 10^4
--2^31<= nums[i] <= 2^31- 1
+1 <= nums.length <= 104
+-2^31 <= nums[i] <= 2^31 - 1
 
 进阶：你能尽量减少完成的操作次数吗？
 */
@@ -23,20 +23,45 @@ import "fmt"
 
 func main() {
 	nums := []int{0, 1, 0, 3, 12}
-	sol_283_1(nums)
+	//nums := []int{1, 0}
+	sol_283_2(nums)
 	fmt.Println(nums)
 }
 
-// 遍历数组，如果值不为0，则将指针前移动1位，并且将指针前一位设置位当前值，如果为0，指针不动，如此遍历完成后 [0,j) 区间都是不为0的元素，[j:]都是0
+// 双指针，快指针从第一个元素开始，往后查找，直到找到第一个不为0的数字，
+// 随后慢指针开始往后找，找到第一个为0的数字，两者调换位置，继续从快指针指向的下标往后
 func sol_283_1(nums []int) {
-	nonZeroPoint := 0
-	for _, num := range nums {
-		if num != 0 {
-			nums[nonZeroPoint] = num
-			nonZeroPoint++
+	var zeroPointer, nonZeroPointer int
+	for {
+		if nonZeroPointer == len(nums) || zeroPointer == len(nums) {
+			return
+		}
+		if nums[nonZeroPointer] != 0 {
+			if nums[zeroPointer] == 0 {
+				// 调换顺序
+				if nonZeroPointer > zeroPointer {
+					nums[nonZeroPointer], nums[zeroPointer] = nums[zeroPointer], nums[nonZeroPointer]
+				}
+				nonZeroPointer = zeroPointer + 1
+			} else {
+				zeroPointer++
+			}
+		} else {
+			nonZeroPointer++
 		}
 	}
-	for ; nonZeroPoint < len(nums); nonZeroPoint++ {
-		nums[nonZeroPoint] = 0
+}
+
+// 指针i用于迭代，指针 nonZeroIndex 用于记录当前非0元素的指针，循环一遍后，所有非0元素已经归位，nonZeroIndex 之后的元素再置为0
+func sol_283_2(nums []int) {
+	var nonZeroIndex int
+	for i, _ := range nums {
+		if nums[i] != 0 {
+			nums[nonZeroIndex] = nums[i]
+			nonZeroIndex++
+		}
+	}
+	for i := nonZeroIndex; i < len(nums); i++ {
+		nums[i] = 0
 	}
 }

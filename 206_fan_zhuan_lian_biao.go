@@ -2,6 +2,7 @@
 【题目206】反转链表
 给你单链表的头节点 head ，请你反转链表，并返回反转后的链表。
 
+
 示例 1：
 输入：head = [1,2,3,4,5]
 输出：[5,4,3,2,1]
@@ -23,14 +24,8 @@ type ListNode206 struct {
 
 func main() {
 	node := &ListNode206{Val: 1, Next: &ListNode206{Val: 2, Next: &ListNode206{Val: 3, Next: &ListNode206{Val: 4}}}}
-	res := sol206_7(node)
-	for {
-		if res == nil {
-			break
-		}
-		fmt.Println(res.Val)
-		res = res.Next
-	}
+	res := sol206_2(node)
+	fmt.Println(res)
 }
 
 // 双指针循环法，记住上一个节点和下一个节点，需要借助临时变量处理断链问题，两两串联
@@ -73,59 +68,8 @@ func sol206_2(head *ListNode206) *ListNode206 {
 	if head == nil || head.Next == nil {
 		return head
 	}
-	ret := sol206_2(head.Next) // 3	| 2 | 1
-	head.Next.Next = head      // 2->3->nil => 2->3->2 | 1->2->1 |
-	head.Next = nil            // 2->3 => 2->nil | 1->nil
-	return ret                 // 3->2 | 2->1
-}
-
-func sol206_3(head *ListNode206) *ListNode206 {
-	var current, prev, next *ListNode206
-	current = head
-	for current != nil {
-		next = current.Next
-		current.Next = prev
-		prev = current
-		current = next
-	}
-	return prev
-}
-
-func sol206_4(head *ListNode206) *ListNode206 {
-	if head == nil || head.Next == nil {
-		return head
-	}
-	node := sol206_4(head.Next) // 1-2-3 => 3
-	head.Next.Next = head       // 2-3 -> 3-2-3
-	head.Next = nil             // 3-2
-	return node                 // 3
-}
-
-func sol206_5(head *ListNode206) *ListNode206 {
-	if head == nil || head.Next == nil {
-		return head
-	}
-	endNode := sol206_5(head.Next) // 4->nil 4->3->nil 4->3->2->nil 4->3->2->1->nil
-	head.Next.Next = head          // 3->4->3 2->3->2 1->2->1
-	head.Next = nil                // 3->nil 2->nil 1->nil
-	return endNode                 // 4->3	4->3->2	4->3->2->1
-}
-
-func sol206_6(head *ListNode206) *ListNode206 {
-	var prev, curr *ListNode206
-	curr = head
-	for {
-		if curr == nil {
-			break
-		}
-		next := curr.Next
-		curr.Next = prev
-		prev = curr
-		curr = next
-	}
-	return prev
-}
-
-func sol206_7(head *ListNode206) *ListNode206 {
-	return nil
+	ret := sol206_2(head.Next) // ret = head.Next
+	head.Next.Next = head
+	head.Next = nil
+	return ret
 }

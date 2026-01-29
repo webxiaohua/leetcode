@@ -10,7 +10,7 @@
 链表中节点数目在范围[1, 105] 内
 0 <= Node.val <= 9
 
-进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
+进阶：你能否用 O(n) 时间复杂度和 O(1) 空间复杂度解决此题？
 */
 package main
 
@@ -23,7 +23,7 @@ type ListNode234 struct {
 
 func main() {
 	node := &ListNode234{Val: 1, Next: &ListNode234{Val: 2, Next: &ListNode234{Val: 2, Next: &ListNode234{Val: 1}}}}
-	res := sol_234_3(node)
+	res := sol_234_2(node)
 	fmt.Println(res)
 }
 
@@ -87,46 +87,5 @@ func reverse_234(head *ListNode234) (res *ListNode234) {
 	res = reverse_234(head.Next) // 1
 	head.Next.Next = head        // 2->1 => 2->1->2 | 1->2
 	head.Next = nil              // 2->1 | 2
-	return res
-}
-
-func sol_234_3(head *ListNode234) bool {
-	// 快慢指针，慢每次前进1，快每次前进2
-	// 123321	->	fast:[6] slow:[3]
-	// 12321	->	fast:[5] slow:[2]
-	// fast结束后，得到slow，从slow开始进行链表反转，再将反转后的短链表和head进行比对，直到短链表结束，得出比较结果
-	res := true
-	fast, slow := head, head
-	for {
-		if fast == nil || fast.Next == nil {
-			break
-		}
-		slow = slow.Next
-		fast = fast.Next.Next
-	}
-	// 反转链表
-	var prev, current *ListNode234
-	current = slow
-	for {
-		if current == nil {
-			break
-		}
-		next := current.Next
-		current.Next = prev
-		prev = current
-		current = next
-	}
-	// 比较
-	for {
-		if prev == nil {
-			break
-		}
-		if head.Val != prev.Val {
-			res = false
-			break
-		}
-		head = head.Next
-		prev = prev.Next
-	}
 	return res
 }

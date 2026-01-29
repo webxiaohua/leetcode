@@ -1,7 +1,6 @@
-/**
+/*
 【题目15】三数之和
-给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
-你返回所有和为 0 且不重复的三元组。
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请你返回所有和为 0 且不重复的三元组。
 注意：答案中不可以包含重复的三元组。
 
 示例 1：
@@ -24,10 +23,11 @@ nums[0] + nums[3] + nums[4] = (-1) + 2 + (-1) = 0 。
 输出：[[0,0,0]]
 解释：唯一可能的三元组和为 0 。
 
+
 提示：
 3 <= nums.length <= 3000
--10^5 <= nums[i] <= 10^5
-**/
+-105 <= nums[i] <= 105
+*/
 
 package main
 
@@ -38,28 +38,26 @@ import (
 
 func main() {
 	nums := []int{-1, 0, 1, 2, -1, -4}
-	res := sol15_1(nums)
+	//nums := []int{0, 0, 0}
+	res := sol15_2(nums)
 	fmt.Println(res)
 }
 
+// 排序 + 三指针，左右两端控制，中间指针移动，注意重复判断（各个指针遇到相邻元素为重复元素时需要跳过）
 func sol15_1(nums []int) [][]int {
 	res := make([][]int, 0)
-	// 升序排列，前2后1 方式求和，如果小于0， left 指针往后移动，如果大于0，right 往前移动，直到匹配为止
 	sort.Ints(nums)
 	for i := 0; i < len(nums)-2; i++ {
 		if i > 0 && nums[i] == nums[i-1] {
-			// 重复元素，没有必要执行
-			continue
+			continue // 避免重复的元素
 		}
-		left, right := i+1, len(nums)-1
+		left := i + 1
+		right := len(nums) - 1
 		for left < right {
-			if nums[i]+nums[left]+nums[right] < 0 {
-				left++
-			} else if nums[i]+nums[left]+nums[right] > 0 {
-				right--
-			} else {
+			sum := nums[i] + nums[left] + nums[right]
+			if sum == 0 {
 				res = append(res, []int{nums[i], nums[left], nums[right]})
-				// 以i为基数，变换 left 和 right 指针，求出其他可能的解，要过滤掉重复元素
+				// 重复判断
 				for left < right && nums[left] == nums[left+1] {
 					left++
 				}
@@ -67,6 +65,11 @@ func sol15_1(nums []int) [][]int {
 					right--
 				}
 				left++
+				right--
+			} else if sum < 0 {
+				left++
+			} else {
+				right--
 			}
 		}
 	}
@@ -80,15 +83,12 @@ func sol15_2(nums []int) [][]int {
 		if i > 0 && nums[i] == nums[i-1] {
 			continue
 		}
-		left, right := i+1, len(nums)-1
+		left := i + 1
+		right := len(nums) - 1
 		for left < right {
-			if nums[i]+nums[left]+nums[right] < 0 {
-				left++
-			} else if nums[i]+nums[left]+nums[right] > 0 {
-				right--
-			} else {
+			sum := nums[i] + nums[left] + nums[right]
+			if sum == 0 {
 				res = append(res, []int{nums[i], nums[left], nums[right]})
-				// 求解i的其他可能的解
 				for left < right && nums[left] == nums[left+1] {
 					left++
 				}
@@ -96,6 +96,11 @@ func sol15_2(nums []int) [][]int {
 					right--
 				}
 				left++
+				right--
+			} else if sum < 0 {
+				left++
+			} else {
+				right--
 			}
 		}
 	}

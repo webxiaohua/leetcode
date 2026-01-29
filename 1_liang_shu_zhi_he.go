@@ -25,10 +25,10 @@ package main
 import "fmt"
 
 func main() {
-	nums := []int{2, 7, 11, 15}
-	target := 9
+	nums := []int{3, 2, 4}
+	target := 6
 	//res := sol1_1(nums, target)
-	res := sol1_2(nums, target)
+	res := twoSum(nums, target)
 	fmt.Println(res)
 }
 
@@ -56,4 +56,21 @@ func sol1_2(nums []int, target int) []int {
 		_map[v] = i
 	}
 	return nil
+}
+
+func twoSum(nums []int, target int) []int {
+	var res []int
+	tmpMap := make(map[int]int)
+	for i, num := range nums {
+		tmpMap[num] = i
+	}
+	for i, num := range nums {
+		if j, ok := tmpMap[target-num]; ok {
+			res = []int{i, j}
+			break
+		} else {
+			continue
+		}
+	}
+	return res
 }
