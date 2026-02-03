@@ -140,7 +140,7 @@ func sol88_2(nums1 []int, m int, nums2 []int, n int) []int {
 	return res
 }
 
-// 双指针 & 内存最大利用
+// 三指针 & 内存最大利用
 func sol88_3(nums1 []int, m int, nums2 []int, n int) []int {
 	if m == 0 {
 		for i := 0; i < len(nums2); i++ {
