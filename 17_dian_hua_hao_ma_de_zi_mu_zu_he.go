@@ -30,7 +30,7 @@ func main() {
 
 // 回溯求解 - 深度优先
 func sol17_1(digits string) []string {
-	// 先简历map，利用数组下表
+	// 先建立map，利用数组下标
 	phoneMap := []string{
 		"", "", // 0和1没有字母
 		"abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz",
@@ -48,9 +48,9 @@ func sol17_1(digits string) []string {
 		letters := phoneMap[digit]
 		for i := 0; i < len(letters); i++ {
 			current = append(current, letters[i])
-			backtrack(idx + 1)
+			backtrack(idx + 1) // a,d | a,e | a,f | b,d
 			// 回溯，撤销选择，移除最后一个字母
-			current = current[:len(current)-1]
+			current = current[:len(current)-1] // a | a | a | b
 		}
 	}
 	backtrack(0)

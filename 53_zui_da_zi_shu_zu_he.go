@@ -17,8 +17,8 @@
 输出：23
 
 提示：
-1 <= nums.length <= 105
--104 <= nums[i] <= 104
+1 <= nums.length <= 10^5
+-10^4 <= nums[i] <= 10^4
 
 **/
 
@@ -26,12 +26,11 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
 func main() {
 	nums := []int{-2, 1, -3, 4, -1, 2, 1, -5, 4}
-	res := sol53_2(nums)
+	res := sol53_3(nums)
 	fmt.Println(res)
 }
 
@@ -55,7 +54,7 @@ func sol53_1(nums []int) int {
 }
 
 func sol53_2(nums []int) int {
-	globalMaxSum, currentMaxSum := math.MinInt32, 0
+	globalMaxSum, currentMaxSum := -10000, 0
 	for _, num := range nums {
 		if currentMaxSum < 0 {
 			currentMaxSum = num
@@ -68,4 +67,20 @@ func sol53_2(nums []int) int {
 		}
 	}
 	return globalMaxSum
+}
+
+func sol53_3(nums []int) int {
+	// 局部最优 & 全局最优
+	localMax, globalMax := nums[0], nums[0]
+	for i := 1; i < len(nums); i++ {
+		if localMax < 0 {
+			localMax = nums[i]
+		} else {
+			localMax = localMax + nums[i]
+		}
+		if localMax > globalMax {
+			globalMax = localMax
+		}
+	}
+	return globalMax
 }
