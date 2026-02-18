@@ -16,10 +16,10 @@
 输入: s = "pwwkew"
 输出: 3
 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
-     请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
+     请注意，你的答案必须是 子串 的长度，"wke" 是一个子序列，不是子串。
 
 提示：
-0 <= s.length <= 5 * 104
+0 <= s.length <= 5 * 10^4
 s 由英文字母、数字、符号和空格组成
 **/
 
@@ -29,9 +29,10 @@ import "fmt"
 
 func main() {
 	s := "abba"
-	//s := "dvdf"
+	//s = "dvdf"
+	//s = "tmmzuxt"
 	//s := "bbb"
-	res := sol3_1(s)
+	res := sol3_2(s)
 	fmt.Println(res)
 }
 
@@ -54,3 +55,26 @@ func sol3_1(s string) int {
 	}
 	return max
 }
+
+func sol3_2(s string) int {
+	// 滑动窗口
+	max, start, end := 0, 0, 0
+	tmpMap := make(map[byte]int)
+	for ; end < len(s); end++ {
+		if index, found := tmpMap[s[end]]; found {
+			if start <= index {
+				start = index + 1
+			}
+		}
+		tmpMap[s[end]] = end
+		if (end - start + 1) > max {
+			max = end - start + 1
+		}
+	}
+	return max
+}
+
+// a->0 , b->1
+// start = 2
+
+// a->0, b->2
